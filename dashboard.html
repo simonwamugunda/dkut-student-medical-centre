@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DKUT Student Medical Centre</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-image: url('images/background.jpg');
+            margin: 0px;
+        }
+        .parent-container{
+            display: flex;
+            flex-direction: row;
+        }
+
+        .sidebar{
+            position: fixed;
+            background-color: white;
+            border: solid;
+            width: 30vw;
+            padding-top: 30px;
+            height: 100vh;
+            margin-top: -20px;
+            margin-left: -20px;
+        }
+        nav {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        nav a, button, .search-container input, .search-container button {
+            padding: 10px 15px;
+            margin-top: 10px;
+            margin-left: -20px;
+            text-decoration: none;
+            background-color: #121475;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 20vw;
+        }
+        .middle-bar{
+            margin-left: 600px;
+        }
+        nav a:hover, button:hover, .search-container button:hover {
+            background-color: #2b9621;
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 20px;
+
+        }
+        .image-container img {
+            width: 100vw;
+            height: 60vh;
+            border-radius: 10px;
+            animation: fadeIn 1.5s ease-in-out;
+            transition: transform 0.5s ease-in-out;
+            background-color: aquamarine;
+        }
+        .image-container img:hover {
+            transform: scale(1.1);
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+        .search-container input {
+            padding: 8px;
+            width: 100px;
+            color: black;
+            background-color: white;
+            border: 1px solid #370e66;
+        }
+        .search-button{
+            width: 150px;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .content-section {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border: none;
+            
+            
+            text-align: left;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #370e66;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #370e66;
+            color: white;
+        }
+        ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+        img{
+        height: 320px;
+        width: 500px;
+
+    }
+    .dekut-header{
+        margin-top: -30px;
+        font-size: 36px;
+        font-weight: 700;
+
+    }
+    .logo{
+        height: 200px;
+        width: 50vw; 
+        margin-left: -160px;
+        margin-top: -20px;
+       }
+       .content-section {
+    background-color: blue; /* Blue background */
+    color: white; /* White text color */
+    text-align: left; /* Align text to the left */
+    padding: 20px; /* Add some padding */
+    border-radius: 10px; /* Rounded corners */
+    width: 50%; /* Adjust width */
+    margin: auto; /* Center horizontally */
+    position: absolute;
+    top: 90%; /* Position below the Contacts section */
+    left: 70%; /* Align with Contacts */
+    transform: translate(-50%, -50%); /* Centering the div */
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2); /* Soft shadow */
+}
+
+.Complaints h1 {
+    text-align: center; /* Center title */
+    font-size: 24px;
+}
+
+.Complaints p {
+    text-align: center; /* Center paragraph */
+    font-size: 16px;
+}
+
+.content-section input,
+.Complaints textarea {
+    width: 100%; /* Full width */
+    padding: 10px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.Complaints label {
+    font-size: 18px;
+    font-weight: bold;
+    display: block; /* Make labels appear above fields */
+    margin-top: 10px;
+}
+
+.Complaints textarea {
+    resize: none; /* Disable resizing */
+}
+
+.Complaints .btn {
+    background-color: white;
+    color: blue;
+    border: none;
+    padding: 12px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-top: 15px;
+    border-radius: 5px;
+    width: 100%; /* Full width button */
+    font-weight: bold;
+}
+
+.Complaints .btn:hover {
+    background-color: lightgray; /* Hover effect */
+}
+       #Contacts {
+    background-color: blue; /* Blue background */
+    color: white; /* White text for contrast */
+    text-align: left; /* Align text to the left */
+    padding: 20px; /* Add some padding */
+    border-radius: 10px; /* Optional: Rounded corners */
+    width: 50%; /* Adjust width */
+    margin: auto; /* Center horizontally */
+    position: absolute;
+    top: 50%;
+    left: 60%; /* Move it further to the right */
+    transform: translate(-50%, -50%); /* Centering the div */
+}
+
+.Contacts ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+}
+
+.Contacts li {
+    font-size: 18px; /* Adjust font size */
+    margin: 10px 0; /* Add spacing between list items */
+}
+
+
+
+    </style>
+</head>
+<body>
+   <div class="parent-container">
+    <div class="sidebar"><nav>
+        <div class="search-container">
+            <input type="text" id="searchBox" placeholder="Search...">
+            <button onclick="searchPage()" class="search-button">Search</button>
+        </div>
+        <button onclick="showSection('home')">Home</button>
+        <button onclick="showSection('booking appointment')">book appointment</button>
+        <button onclick="showSection('serviceDetails')">Service Level Management</button>
+        <button onclick="showSection('services')">Services</button>
+        <button onclick="showSection('Complaints and Compliments')">Complaints and Compliments</button>
+        <button onclick="showSection('Contacts')">Contacts</button>
+        <button  ><a href="https://www.dkut.ac.ke/">University Website</a></button>
+
+    </nav></div>
+    <div class="middle-bar"><img class="logo"src="images/logo-header.png" alt="Medical System Logo">
+        <h1 class="dekut-header">Welcome to DKUT Student Medical Centre</h1>
+        
+        <div id="home" class="content-section" style="display: block;">
+            
+            
+            <div class="image-container"></div>
+            <img src="images/medicals.jpg"alt="medical system house medical">
+        </div>
+        </div>
+    
+        <div id="serviceDetails" class="content-section">
+            <h2>Service Level Agreement</h2>
+            <table>
+                <tr>
+                    <th>Operation Time</th>
+                    <td>Services to be around the clock</td>
+                </tr>
+                <tr>
+                    <th>Referral Services</th>
+                    <td>Not more than 15 minutes from time of arrival</td>
+                </tr>
+                <tr>
+                    <th>Emergency Services</th>
+                    <td>Within one hour from time of contact</td>
+                </tr>
+                <tr>
+                    <th>Lab Services</th>
+                    <td>One-hour turnaround time from the time of contact at the lab (for available tests)</td>
+                </tr>
+                <tr>
+                    <th>Consultation</th>
+                    <td>Free for all students with valid ID. Staff and dependents pay Ksh. 100 per consultation.</td>
+                </tr>
+                <tr>
+                    <th>File Opening</th>
+                    <td>Free for students, staff, and dependents</td>
+                </tr>
+                <tr>
+                    <th>Drugs & Procedures</th>
+                    <td>Free for students, staff, and dependents</td>
+                </tr>
+                <tr>
+                    <th>Lab Tests</th>
+                    <td>Free for all available tests</td>
+                </tr>
+                <tr>
+                    <th>Medical Reports</th>
+                    <td>Free for students, staff, and dependents</td>
+                </tr>
+            </table>
+        </div>
+    
+        <div id="services" class="content-section">
+            <h2>Medical Centre Services</h2>
+            <p>The Medical Centre services are available to all students, staff, and their dependents.</p>
+    
+            <h3>Our Services Include:</h3>
+            <ul>
+                <li>Out-patient services (Currently)</li>
+                <li>Laboratory services</li>
+                <li>Round-the-clock Ambulance services for cases requiring urgent medical referrals to other Medical Institutions.</li>
+            </ul>
+    
+            <h3>For Staff / Dependants:</h3>
+            <p>We have a memorandum of understanding with the following Institutions:</p>
+            <ul>
+                <li>Mt. Kenya Hospital, Nyeri</li>
+                <li>Consolata Hospital, Nyeri</li>
+                <li>Outspan Hospital, Nyeri</li>
+                <li>Gertrude Hospital, Nairobi (and branches)</li>
+            </ul>
+            <p>These are used for referrals in cases requiring specialized Diagnostic or Therapeutic services not available at our Medical Centre. The same Institutions are also used for admissions.</p>
+            <p>Arrangements are underway to bring other Institutions on board.</p>
+        </div>
+
+        <div id="booking appointment" class="content-section">
+        <h2>Book an Appointment</h2>
+    <form >
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+
+        <label for="date">Select Date:</label>
+        <input type="date" id="date" required>
+
+        <button type="button" onclick="bookAppointment()">Book Appointment</button>
+    </form>
+    <p id="confirmation"></p>
+        </div>
+
+        <div id="Complaints and Compliments" class="content-section">
+            <h1>Complaints and Compliments</h1>
+            <p>You can post your complaints and/or compliments to the medical officer using the form provided below.
+                Leave an email address if you require feedback.</p>
+             <label for="fname">First name</label>
+            <input type="text" id="fname" name="firstname">
+            <label for="lname">Last name</label>
+            <input type="text" id="lname" name="lastname">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email">
+            <textarea name="message" rows="4" cols="50" placeholder="Enter your message" id="complaintDetails"></textarea>
+
+            <label for="input-field">comment or message</label>
+
+            <button class="btn" onclick="submitComplaint()">Submit Complaint</button>
+
+
+        </div>  
+        <div id="Contacts" class="content-section">
+            <ul>
+          <li> Phone :    0743 150 434</li> 
+          <li>E-mail :    medicalofficer@dkut.ac.ke</li>
+          <li>Weekdays: 8am to 9 pm</li>
+          <li>Weekends: 8 am to 5 pm</li>
+            </ul>
+        </div>   
+
+   </div>
+    
+    <script>
+        function showSection(sectionId) {
+            let sections = document.getElementsByClassName("content-section");
+            for (let section of sections) {
+                section.style.display = "none";
+            }
+            document.getElementById(sectionId).style.display = "block";
+        }
+
+        function searchPage() {
+            let searchText = document.getElementById("searchBox").value.toLowerCase();
+            let sections = document.getElementsByClassName("content-section");
+
+            for (let section of sections) {
+                let text = section.innerHTML;
+                text = text.replace(/<span class="highlight">(.*?)<\/span>/g, "$1");
+
+                if (searchText.trim() !== "") {
+                    let regex = new RegExp(searchText, "gi");
+                    section.innerHTML = text.replace(regex, match => `<span class="highlight">${match}</span>`);
+                }
+            }
+        }
+        function searchPage() {
+    let input = document.getElementById("searchBox").value.toLowerCase();
+    let items = document.querySelectorAll(".content-section");
+    
+    items.forEach(item => {
+        let text = item.textContent.toLowerCase();
+        if (text.includes(input)) {
+            item.style.display = "block";
+        } else {
+            item.style.display = "none";
+        }
+    });
+}
+function showSection(sectionId) {
+    let sections = document.getElementsByClassName("content-section");
+    for (let section of sections) {
+        section.style.display = "none";  // Hide all sections
+    }
+    document.getElementById(sectionId).style.display = "block"; // Show the selected section
+}
+       
+
+function submitComplaint() {
+        // Get the values from the input fields
+        const firstName = document.getElementById("fname").value;
+        const lastName = document.getElementById("lname").value;
+        const email = document.getElementById("email").value;
+        const message = document.getElementById("complaintDetails").value;
+        const complaintId = "C" + Math.floor(Math.random() * 1000); // Generate random ID
+
+        // Send complaint to Admin Dashboard
+        window.parent.postMessage({
+            type: "complaint",
+            complaintId: complaintId,
+            user: `${firstName} ${lastName}`,
+            email: email,
+            details: message
+        }, "*");
+
+        alert("Complaint submitted!");
+    }
+    
+    // Handle Appointment Booking
+    function bookAppointment() {
+        const patientName = document.getElementById("name").value; // Correct ID
+        const email = document.getElementById("email").value; // Correct ID
+        const date = document.getElementById("date").value; // Correct ID
+        const appointmentId = "A" + Math.floor(Math.random() * 1000); // Generate random ID
+
+        // Send appointment to Admin Dashboard
+        window.parent.postMessage({
+            type: "appointment",
+            appointmentId: appointmentId,
+            patientName: patientName,
+            email: email, // Include email in the message
+            date: date
+        }, "*");
+
+        alert("Appointment booked successfully!");
+    }
+    </script>
+</body>
+</html>

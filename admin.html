@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical System Login</title>
+    <link rel="stylesheet" href="login.css">
+    <!-- Firebase Compatibility SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div class="login-container">
+        <img src="images/logo-header.png" alt="Medical System Logo">
+        <h2>Admin Login</h2>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="options">
+                <label><input type="checkbox" id="rememberMe"> Remember Me</label>
+                <a href="#">Forgot Password?</a>
+            </div>
+            <p id="error-message" style="color: red; display: none;"></p>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDGIn_HNktrZFXj1X1sZK1sPIutrVpUYN0",
+            authDomain: "dkut-student-medical-center.firebaseapp.com",
+            projectId: "dkut-student-medical-center",
+            storageBucket: "dkut-student-medical-center.appspot.com",
+            messagingSenderId: "408910256751",
+            appId: "1:408910256751:web:6d74b35cde8b22a5b04b9a",
+            measurementId: "G-8QDYBG801Q"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore(); // ✅ Now Firestore is properly initialized
+
+        document.getElementById("loginForm").addEventListener("submit", async function (event) {
+            event.preventDefault(); // Prevent form from submitting normally
+
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const rememberMe = document.getElementById("rememberMe").checked;
+            const errorMessage = document.getElementById("error-message");
+            const loginButton = document.querySelector(".login-btn");
+
+            if (!email || !password) {
+                errorMessage.textContent = "Email and password are required.";
+                errorMessage.style.display = "block";
+                return;
+            }
+
+            loginButton.disabled = true; // Prevent multiple clicks
+
+            try {
+                // Set persistence based on "Remember Me"
+                const persistence = rememberMe
+                    ? firebase.auth.Auth.Persistence.LOCAL
+                    : firebase.auth.Auth.Persistence.SESSION;
+                await firebase.auth().setPersistence(persistence);
+
+                // Sign in user
+                const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                // Fetch user role from Firestore
+                const userDoc = await db.collection("users").doc(user.uid).get();
+
+                if (userDoc.exists) {
+    console.log("User document data:", userDoc.data()); // Debugging line
+    const userData = userDoc.data();
+    
+    if (userData.role === "admin") {
+        alert("Login successful!");
+        localStorage.setItem("user", JSON.stringify(user));
+        window.location.href = "admindash.html"; // Redirect to admin dashboard
+    } else {
+        alert("Access Denied: You are not an admin.");
+        firebase.auth().signOut();
+    }
+} else {
+    alert("No user data found. Contact admin.");
+    console.error("Firestore document not found for UID:", user.uid); // Debugging line
+    firebase.auth().signOut();
+}
+            } catch (error) {
+                errorMessage.textContent = error.message || "Invalid email or password.";
+                errorMessage.style.display = "block";
+            }
+
+            loginButton.disabled = false; // Re-enable button
+        });
+    </script>
+</body>
+</html>

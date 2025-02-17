@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Sign-Up</title>
+    <link rel="stylesheet" href="login.css">
+    <!-- Firebase Compatibility SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div class="login-container">
+        <img src="images/logo-header.png" alt="Medical System Logo">
+        <h2>Admin Sign-Up</h2>
+        <form id="signupForm">
+            <div class="input-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <p id="error-message" style="color: red; display: none;"></p>
+            <button type="submit" class="login-btn">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDGIn_HNktrZFXj1X1sZK1sPIutrVpUYN0",
+            authDomain: "dkut-student-medical-center.firebaseapp.com",
+            projectId: "dkut-student-medical-center",
+            storageBucket: "dkut-student-medical-center.appspot.com",
+            messagingSenderId: "408910256751",
+            appId: "1:408910256751:web:6d74b35cde8b22a5b04b9a",
+            measurementId: "G-8QDYBG801Q"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        document.getElementById("signupForm").addEventListener("submit", async function (event) {
+            event.preventDefault(); // Prevent form from submitting normally
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const errorMessage = document.getElementById("error-message");
+
+            if (!name || !email || !password) {
+                errorMessage.textContent = "All fields are required.";
+                errorMessage.style.display = "block";
+                return;
+            }
+
+            try {
+                // Create user with email and password
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                // Store admin details in Firestore
+                await db.collection("users").doc(user.uid).set({
+                    name: name,
+                    email: email,
+                    role: "admin" // Assigning admin role
+                });
+
+                alert("Admin registered successfully!");
+                window.location.href = "admindash.html"; // Redirect to admin dashboard
+            } catch (error) {
+                errorMessage.textContent = error.message || "Sign-up failed.";
+                errorMessage.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Center Registration</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <img src="images/logo-header.png" alt="Medical System Logo">
+    <h1>Medical Center Student Registration Form</h1>
+    <form id="registration-form">
+      
+      <div class="form-group">
+        <label for="firstname">First Name</label>
+        <input type="text" id="firstname" name="firstname" required placeholder="Enter your first name">
+      </div>
+
+      <div class="form-group">
+        <label for="lastname">Last Name</label>
+        <input type="text" id="lastname" name="lastname" required placeholder="Enter your last name">
+      </div>
+
+      <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob" required>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Registration Number</label>
+        <input type="text" id="address" name="address" required placeholder="Enter your registration number">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required placeholder="Enter your email">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="Create a password">
+      </div>
+
+      <button type="submit" class="submit-btn">Register</button>
+    </form>
+    <div>If you already have an account <a href="login.html">Click here</a></div>
+    <p id="message"></p>
+  </div>
+
+  <!-- Firebase App (Modular SDK) -->
+  <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+            
+            apiKey: "AIzaSyDGIn_HNktrZFXj1X1sZK1sPIutrVpUYN0",
+            authDomain: "dkut-student-medical-center.firebaseapp.com",
+            projectId: "dkut-student-medical-center",
+            storageBucket: "dkut-student-medical-center.firebasestorage.app",
+            messagingSenderId: "408910256751",
+            appId: "1:408910256751:web:6d74b35cde8b22a5b04b9a",
+            measurementId: "G-8QDYBG801Q"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Registration form event listener
+    document.getElementById('registration-form').addEventListener('submit', async function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData.entries()); // Convert to JSON object
+
+      const { email, password } = data;
+
+      try {
+        // Set persistence based on "Remember Me"
+        const rememberMe = document.getElementById("rememberMe")?.checked;
+        const persistenceMode = rememberMe ? browserLocalPersistence : browserSessionPersistence;
+        await setPersistence(auth, persistenceMode);
+
+        // Create user with email and password
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        console.log("User registered successfully:", userCredential.user);
+
+        document.getElementById('message').textContent = "✅ Registration successful!";
+        document.getElementById('message').classList.add("success");
+        event.target.reset(); // Clear form after successful registration
+      } catch (error) {
+        console.error("Error registering user:", error);
+        document.getElementById('message').textContent = `❌ ${error.message}`;
+        document.getElementById('message').classList.add("error");
+      }
+    });
+  </script>
+</body>
+</html>

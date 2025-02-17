@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        /* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #121475;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+}
+
+.sidebar nav button {
+    background-color: white;
+    color: #121475;
+    border: none;
+    padding: 10px;
+    margin: 5px 0;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.sidebar nav button:hover {
+    background-color: #2b9621;
+    color: white;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Sections */
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #370e66;
+    color: white;
+}
+
+/* Buttons */
+button {
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.resolve-btn, .delete-btn {
+    background-color: #ff5c5c;
+    color: white;
+}
+
+.resolve-btn:hover, .delete-btn:hover {
+    background-color: #cc0000;
+}
+
+.cancel-btn {
+    background-color: #f39c12;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #d68910;
+}
+
+.add-btn {
+    background-color: #2b9621;
+    color: white;
+}
+
+.add-btn:hover {
+    background-color: #1e6f15;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        text-align: center;
+    }
+    .main-content {
+        padding: 10px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>Admin Dashboard</h2>
+            <nav>
+                <button onclick="showSection('dashboard')">Dashboard</button>
+                <button onclick="showSection('complaints')">Manage Complaints</button>
+                <button onclick="showSection('services')">Manage Services</button>
+                <button onclick="showSection('appointments')">Manage Appointments</button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Overview -->
+            <section id="dashboard" class="content-section active">
+                <div>
+                <h2>Welcome, Admin</h2>
+                <p>Monitor complaints, manage services, and schedule appointments efficiently.</p>
+                <img src="images/admin picture.jpg"alt="medical system admin picture">
+            </div>
+            </section>
+
+            <!-- Manage Complaints -->
+            <section id="complaints" class="content-section">
+                <h2>Manage Complaints</h2>
+                <table>
+                    <tr>
+                        <th>Complaint ID</th>
+                        <th>User</th>
+                        <th>Details</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>001</td>
+                        <td>John Doe</td>
+                        <td>Delayed medical service</td>
+                        <td>Pending</td>
+                        <td><button class="resolve-btn">Resolve</button></td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- Manage Services -->
+            <section id="services" class="content-section">
+                <h2>Manage Services</h2>
+                <button class="add-btn">Add New Service</button>
+                <ul>
+                    <li>General Consultation <button class="delete-btn">Delete</button></li>
+                    <li>Lab Testing <button class="delete-btn">Delete</button></li>
+                </ul>
+            </section>
+
+            <!-- Manage Appointments -->
+            <section id="appointments" class="content-section">
+                <h2>Manage Appointments</h2>
+                <table>
+                    <tr>
+                        <th>Appointment ID</th>
+                        <th>Patient Name</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>101</td>
+                        <td>Alice Smith</td>
+                        <td>2024-02-15</td>
+                        <td>Confirmed</td>
+                        <td><button class="cancel-btn">Cancel</button></td>
+                    </tr>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script >
+        document.addEventListener("DOMContentLoaded", function () {
+    function showSection(sectionId) {
+        document.querySelectorAll(".content-section").forEach(section => {
+            section.classList.remove("active");
+        });
+        document.getElementById(sectionId).classList.add("active");
+    }
+
+    window.showSection = showSection;
+
+    // Function to add a complaint from DKUT Student Medical Centre
+    function addComplaint(complaintId, user, details) {
+        const complaintsTable = document.querySelector("#complaints table");
+        const newRow = complaintsTable.insertRow();
+        
+        newRow.innerHTML = `
+            <td>${complaintId}</td>
+            <td>${user}</td>
+            <td>${details}</td>
+            <td>Pending</td>
+            <td><button class="resolve-btn">Resolve</button></td>
+        `;
+    }
+})
+
+    // Function to add an appointment from DKUT Student Medical Centre
+    document.addEventListener("DOMContentLoaded", function () {
+        function addAppointment(appointmentId, patientName, email, date) {
+            const appointmentsTable = document.querySelector("#appointments table");
+            const newRow = appointmentsTable.insertRow();
+            
+            newRow.innerHTML = `
+                <td>${appointmentId}</td>
+                <td>${patientName}</td>
+                <td>${email}</td>
+                <td>${date}</td>
+                <td>Confirmed</td>
+            `;
+        }
+
+        // Listen for data from DKUT Medical Centre
+        window.addEventListener("message", function (event) {
+            const data = event.data;
+            
+            if (data.type === "appointment") {
+                addAppointment(data.appointmentId, data.patientName, data.email, data.date);
+            }
+        });
+    });
+document.addEventListener("DOMContentLoaded", function () {
+    // Select all buttons with class "resolve-btn"
+    const resolveButtons = document.querySelectorAll(".resolve-btn");
+
+    // Loop through each button and add a click event listener
+    resolveButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            // Change the button text to "Problem Solved!"
+            this.textContent = "Problem Solved!";
+            this.style.backgroundColor = "green"; // Optional: Change button color to green
+            this.style.color = "white"; // Optional: Change text color to white
+            this.disabled = true; // Optional: Disable the button after clicking
+
+            // Show an alert message (optional)
+            alert("Problem solved!");
+            document.querySelectorAll(".cancel-btn").forEach(button => {
+    button.addEventListener("click", function() {
+      this.textContent = "Cancelled"; // Change button text
+      this.disabled = true; // Optionally disable the button
+    });
+  });
+        });
+    });
+});
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        function showSection(sectionId) {
+            document.querySelectorAll(".content-section").forEach(section => {
+                section.classList.remove("active");
+            });
+            document.getElementById(sectionId).classList.add("active");
+        }
+
+        window.showSection = showSection;
+
+        // Function to add a complaint from DKUT Student Medical Centre
+        function addComplaint(complaintId, user, details) {
+            const complaintsTable = document.querySelector("#complaints table");
+            const newRow = complaintsTable.insertRow();
+            
+            newRow.innerHTML = `
+                <td>${complaintId}</td>
+                <td>${user}</td>
+                <td>${details}</td>
+                <td>Pending</td>
+                <td><button class="resolve-btn">Resolve</button></td>
+            `;
+        }
+
+        // Listen for data from DKUT Medical Centre
+        window.addEventListener("message", function (event) {
+            const data = event.data;
+            
+            if (data.type === "complaint") {
+                addComplaint(data.complaintId, data.user, data.details);
+            } else if (data.type === "appointment") {
+                addAppointment(data.appointmentId, data.patientName, data.date);
+            }
+        });
+    });
+</script>
+    </script>
+</body>
+</html>
